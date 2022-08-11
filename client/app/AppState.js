@@ -8,6 +8,23 @@ class AppState extends EventEmitter {
   /** @type {import('./Models/Value').Value[]} */
   values = []
   socketData = []
+
+  /** @type {import('./Models/Ship').Ship[]} */
+  ships = []
+
+  /** @type {import('./Models/Package').Package[]} */
+  sentPackages = []
+
+  /** @type {import('./Models/Package').Package[]} */
+  receivedPackages = []
+
+  /** @type {import('./Models/Package').Package[]} */
+  shipPackages = []
+
+  /** @type {import('./Models/Ship').Ship} */
+  // @ts-ignore
+  activeShip = null
+
 }
 
 export const ProxyState = new Proxy(new AppState(), {

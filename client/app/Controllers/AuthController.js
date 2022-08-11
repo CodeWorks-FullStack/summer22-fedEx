@@ -78,7 +78,7 @@ function authButton(user) {
 function avatarTemplate(account) {
   return account.picture
     ? /* html */ `
-    <div class="mr-2">
+    <div class="mr-2 selectable rounded" data-bs-toggle="offcanvas" data-bs-target="#packagesOffCanvas" aria-controls="packagesOffCanvas">
       <img class="rounded-circle" src="${account.picture}" alt="${account.name}" height="45"/>
       <span class="mx-1">${account.name}</span>
       </div>`

@@ -1,7 +1,9 @@
 import { ProxyState } from '../AppState.js'
 import { audience, clientId, domain } from '../env.js'
+import { Pop } from '../Utils/Pop.js'
 import { accountService } from './AccountService.js'
 import { api } from './AxiosService.js'
+import { packagesService } from './PackagesService.js'
 // import { socketService } from './SocketService.js'
 
 // @ts-ignore
@@ -20,12 +22,24 @@ export const AuthService = Auth0Provider.initialize({
   }
 })
 
-AuthService.on(AuthService.AUTH_EVENTS.AUTHENTICATED, async() => {
+AuthService.on(AuthService.AUTH_EVENTS.AUTHENTICATED, async () => {
   api.defaults.headers.authorization = AuthService.bearer
   api.interceptors.request.use(refreshAuthToken)
   ProxyState.user = AuthService.user
   await accountService.getAccount()
   // socketService.authenticate(AuthService.bearer)
+  // TODO add things here the need to happen after the user logs-in
+
+
+  try {
+    await packagesService.getReceivedPackages()
+    await packagesService.getSentPackages()
+  } catch (error) {
+    console.error('[Getting User Packages]', error)
+    Pop.error(error)
+  }
+
+
 })
 
 async function refreshAuthToken(config) {
